@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 10:52:11 by fnichola          #+#    #+#             */
-/*   Updated: 2021/11/24 16:52:59 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/11/24 23:23:23 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 void	signal_handler()
 {
 	ft_printf("Signal received!\n");
-	exit(1);
 }
 
 int	main(void)
@@ -28,8 +27,9 @@ int	main(void)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = signal_handler;
 	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGUSR1, &sa, NULL);
 	ft_printf("Server running, PID: %d\n", getpid());
-	pause();
+	while (1)
+		pause();
 	return (0);
 }

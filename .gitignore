@@ -1,4 +1,6 @@
 *.swp
+client
+server
 
 # Prerequisites
 *.d
