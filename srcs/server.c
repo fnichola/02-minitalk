@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 10:52:11 by fnichola          #+#    #+#             */
-/*   Updated: 2021/11/25 21:26:39 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/11/26 21:20:08 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #include <unistd.h>
 #include <signal.h>
 
+sig_atomic_t	g_client_pid = 0;
+
 void	signal_handler(int signum, siginfo_t *info, void *uap)
 {
 	static char	c;
 	static int	bits;
 	
 	(void)uap;
-	(void)info;
+	g_client_pid = info->si_pid;
 	c |= (signum == SIGUSR2);
 	bits++;
 	if (bits == 8)
@@ -29,6 +31,7 @@ void	signal_handler(int signum, siginfo_t *info, void *uap)
 		write(1, &c, 1);
 		bits = 0;
 		c = 0;
+		kill(g_client_pid, SIGUSR2);
 	}
 	else
 		c <<= 1;
