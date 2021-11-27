@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:24:49 by fnichola          #+#    #+#             */
-/*   Updated: 2021/11/27 16:29:39 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/11/27 16:28:42 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
+#include "gnl/get_next_line.h"
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 sig_atomic_t	g_server_ack = 0;
 
@@ -79,19 +81,45 @@ static void	send_line(int pid, char *message)
 	}
 }
 
+void	send_file(int fd, int server_pid)
+{
+	char	*message;
+
+	message = get_next_line(fd);
+	while (message)
+	{
+		send_line(server_pid, message);
+		free(message);
+		message = get_next_line(fd);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	int		server_pid;
+	int		fd;
 
 	init_sigaction();
-	if (argc != 3)
+	fd = STDIN_FILENO;
+	if (argc < 2)
 	{
 		ft_printf_fd(STDERR_FILENO, "Error\n" \
-			"Please provide server PID and message.\n" \
-			"ex: ./client 12345 \"Hello World\"\n");
+			"Please provide server PID.\n" \
+			"./client server_pid [message]\n" \
+			"./client server_pid [-f filename]\n");
 		return (0);
 	}
 	server_pid = ft_atoi(argv[1]);
-	send_line(server_pid, argv[2]);
+	if (argc == 2)
+		send_file(fd, server_pid);
+	else if (argc == 3)
+		send_line(server_pid, argv[2]);
+	else if (argc == 4)
+		if (ft_strncmp(argv[2], "-f", 2) == 0)
+		{
+			fd = open(argv[3], O_RDONLY);
+			send_file(fd, server_pid);
+			close(fd);
+		}
 	return (0);
 }
