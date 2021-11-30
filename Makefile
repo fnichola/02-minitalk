@@ -6,9 +6,12 @@
 #    By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/09 18:01:32 by fnichola          #+#    #+#              #
-#    Updated: 2021/11/27 16:19:11 by fnichola         ###   ########.fr        #
+#    Updated: 2021/11/28 08:44:04 by fnichola         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+SERVER_NAME = server
+CLIENT_NAME = client
 
 LIBFT_DIR = libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
@@ -34,10 +37,10 @@ all: server client
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 	
-server: $(SERVER_OBJS) $(LIBFT_LIB)
+$(SERVER_NAME): $(SERVER_OBJS) $(LIBFT_LIB)
 	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT_LIB) -o server
 
-client: $(CLIENT_OBJS) $(LIBFT_LIB)
+$(CLIENT_NAME): $(CLIENT_OBJS) $(LIBFT_LIB)
 	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(LIBFT_LIB) -o client
 
 bonus:
