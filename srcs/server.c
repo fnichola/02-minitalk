@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 10:52:11 by fnichola          #+#    #+#             */
-/*   Updated: 2021/11/30 19:29:50 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/11/30 22:14:47 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	signal_handler(int signum, siginfo_t *info, void *uap)
 	static char	c;
 	static int	bits;
 	static int	client_pid;
-	
+
 	(void)uap;
 	if (info->si_pid != 0)
 		client_pid = info->si_pid;
@@ -39,8 +39,8 @@ void	signal_handler(int signum, siginfo_t *info, void *uap)
 
 int	main(void)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGUSR1);
 	sigaddset(&sa.sa_mask, SIGUSR2);
@@ -48,7 +48,6 @@ int	main(void)
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-
 	ft_printf("Server running, PID: %d\n", getpid());
 	while (1)
 		pause();
