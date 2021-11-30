@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:24:49 by fnichola          #+#    #+#             */
-/*   Updated: 2021/11/27 16:29:39 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/11/30 19:37:08 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-sig_atomic_t	g_server_ack = 0;
+volatile sig_atomic_t	g_server_ack = 0;
 
 void	signal_handler(int signum, siginfo_t *info, void *uap)
 {
@@ -58,7 +58,7 @@ static void	send_char(int pid, char c)
 		}
 		if (!g_server_ack)
 		{
-			ft_printf("Transmission failure!\n");
+			ft_printf("Transmission failure!\nPlease check PID or restart server.\n");
 			exit(EXIT_FAILURE);
 		}
 		else
@@ -92,6 +92,12 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	server_pid = ft_atoi(argv[1]);
+	if (server_pid <= 0)
+	{
+		ft_printf_fd(STDERR_FILENO, "Error\n" \
+		"Invalid PID.\n");
+		return (0);
+	}
 	send_line(server_pid, argv[2]);
 	return (0);
 }
