@@ -51,3 +51,9 @@ In testing I discovered that the si_pid variable delivered by the SA_SIGINFO fla
 if (info->si_pid != 0)
 		client_pid = info->si_pid;
 ```
+
+---
+
+Run `make` in the root directory to compile the client and server.
+Then use multiple terminal windows or a multiplexer like screen or tmux to start the server and send messages from the client.
+
