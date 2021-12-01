@@ -1,5 +1,5 @@
 # 02-minitalk
-The purpose of this project is to code a small data exchange program using UNIX signals.
+*The purpose of this project is to code a small data exchange program using UNIX signals.*
 
 Using only UNIX signals *SIGUSR1* and *SIGUSR2* the *client* can send text messages to the *server* process, which will then display the received text in the terminal.
 
