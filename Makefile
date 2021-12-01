@@ -6,7 +6,7 @@
 #    By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/09 18:01:32 by fnichola          #+#    #+#              #
-#    Updated: 2021/11/28 08:44:04 by fnichola         ###   ########.fr        #
+#    Updated: 2021/12/01 20:05:30 by fnichola         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,17 +25,20 @@ CLIENT_SRCS = srcs/client.c
 ifdef WITH_BONUS
 SERVER_SRCS = bonus_srcs/server_bonus.c
 CLIENT_SRCS = bonus_srcs/client_bonus.c \
-	bonus_srcs/gnl/get_next_line_bonus.c \
-	bonus_srcs/gnl/get_next_line_utils_bonus.c
+	bonus_srcs/client_signal_bonus.c \
+	bonus_srcs/gnl/get_next_line.c \
+	bonus_srcs/gnl/get_next_line_utils.c
 endif
 
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
+SERVER_DEPS = $(SERVER_SRCS:.c=.d)
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
+CLIENT_DEPS = $(CLIENT_SRCS:.c=.d)
 
 all: server client
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 	
 $(SERVER_NAME): $(SERVER_OBJS) $(LIBFT_LIB)
 	$(CC) $(CFLAGS) $(SERVER_OBJS) $(LIBFT_LIB) -o server
@@ -50,8 +53,8 @@ $(LIBFT_LIB):
 	$(MAKE) bonus -C $(LIBFT_DIR)
 
 clean:
-	$(RM) $(SERVER_OBJS)
-	$(RM) $(CLIENT_OBJS)
+	$(RM) $(SERVER_OBJS) $(SERVER_DEPS)
+	$(RM) $(CLIENT_OBJS) $(CLIENT_DEPS)
 	$(MAKE) clean WITH_BONUS=1 -C $(LIBFT_DIR)
 
 fclean: clean
@@ -61,3 +64,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
+
+-include $(SERVER_DEPS) $(CLIENT_DEPS)

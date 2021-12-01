@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 10:36:29 by fnichola          #+#    #+#             */
-/*   Updated: 2021/12/01 10:46:28 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/12/01 17:55:18 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	wait_for_ack(void)
 static void	send_char(int pid, char c)
 {
 	int		i;
-	int		t;
 
 	i = 7;
 	while (i >= 0)

@@ -6,7 +6,7 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 10:37:36 by fnichola          #+#    #+#             */
-/*   Updated: 2021/12/01 10:57:04 by fnichola         ###   ########.fr       */
+/*   Updated: 2021/12/01 18:24:14 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include <signal.h>
 # include <unistd.h>
 # include <fcntl.h>
+
+# define USAGE_INSTRUCTIONS "Please provide server PID and message or filename.\n \
+e.g.:\n\
+	./client server_pid \"Hello World\"\n\
+	./client server_pid -f sample.txt"
 
 extern volatile sig_atomic_t	g_server_ack;
 
